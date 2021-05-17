@@ -19,10 +19,17 @@ node {
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
     def toolbelt = tool 'toolbelt'
-
+    def pmd = tool 'pmd'
+	
+	
     stage('checkout source') {
         // when running in multi-branch job, one must issue this command
         checkout scm
+    }
+	
+    stage('Run PMD') {
+	    pmdrun = bat returnStatus: true, script: "\"${pmd}\ -d "force-app\main\default\classes" -f html -R "category/apex/design.xml" -reportfile "force-app\output.html"" 
+	    if (pmdrun != 0) { error 'invoking PMD failed' }
     }
 
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
