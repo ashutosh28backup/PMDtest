@@ -28,7 +28,7 @@ node {
     }
 	
     stage('Run PMD') {
-	    pmdrun = bat returnStatus: true, script: "\"${pmd}\ -d "force-app\main\default\classes" -f html -R "category/apex/design.xml" -reportfile "force-app\output.html"" 
+	    pmdrun = bat returnStatus: true, script: "\"${pmd}\" -d "force-app\main\default\classes" -f html -R "category/apex/design.xml" -reportfile "force-app\output.html"" 
 	    if (pmdrun != 0) { error 'invoking PMD failed' }
     }
 
